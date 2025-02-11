@@ -2,18 +2,39 @@ const TicketService = require("../src/pairtest/TicketService.js");
 const TicketTypeRequest = require("../src/pairtest/lib/TicketTypeRequest.js");
 
 // Mocking External Services
-const mockPaymentService = { makePayment: jest.fn() };
-const mockReservationService = { reserveSeat: jest.fn() };
+jest.mock("../src/thirdparty/paymentgateway/TicketPaymentService.js");
+jest.mock("../src/thirdparty/seatbooking/SeatReservationService.js");
 
+const TicketPaymentService = require("../src/thirdparty/paymentgateway/TicketPaymentService.js");
+const SeatReservationService = require("../src/thirdparty/seatbooking/SeatReservationService.js");
+
+/**
+ * Unit tests for the TicketService class.
+ * Ensures ticket purchase functionality, validation rules, and interactions with external services.
+ */
 describe("TicketService", () => {
     let ticketService;
+    let mockPaymentService;
+    let mockReservationService;
 
     /**
-     * Before each test, instantiate a new TicketService with mocked dependencies
-     * and clear any previous mock calls.
+     * Before each test:
+     * - Creates new instances of mocked payment and reservation services.
+     * - Mocks the required service methods (`makePayment` and `reserveSeat`).
+     * - Instantiates a new `TicketService` instance and assigns the mocked services.
+     * - Clears all previous mock function calls.
      */
     beforeEach(() => {
-        ticketService = new TicketService(mockPaymentService, mockReservationService);
+        mockPaymentService = new TicketPaymentService();
+        mockReservationService = new SeatReservationService();
+
+        mockPaymentService.makePayment = jest.fn();
+        mockReservationService.reserveSeat = jest.fn();
+
+        ticketService = new TicketService();
+        ticketService.paymentService = mockPaymentService;
+        ticketService.reservationService = mockReservationService;
+
         jest.clearAllMocks();
     });
 
