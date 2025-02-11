@@ -8,6 +8,10 @@ const mockReservationService = { reserveSeat: jest.fn() };
 describe("TicketService", () => {
     let ticketService;
 
+    /**
+     * Before each test, instantiate a new TicketService with mocked dependencies
+     * and clear any previous mock calls.
+     */
     beforeEach(() => {
         ticketService = new TicketService(mockPaymentService, mockReservationService);
         jest.clearAllMocks();

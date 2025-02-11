@@ -1,6 +1,11 @@
 const TicketTypeRequest = require("../src/pairtest/lib/TicketTypeRequest.js");
 
+/**
+ * Unit tests for the TicketTypeRequest class.
+ * Ensures ticket type and quantity validation logic works as expected.
+ */
 describe("TicketTypeRequest", () => {
+
     test("should create a valid TicketTypeRequest object", () => {
         const ticket = new TicketTypeRequest("ADULT", 3);
         expect(ticket.getTicketType()).toBe("ADULT");
